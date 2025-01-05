@@ -28,6 +28,9 @@ import StopWatch from './src/StopWatch';
 import { Provider, useSelector } from 'react-redux';
 import store from "./src/redux/store"
 import CreateContext from './src/context/CreateContex';
+import NetworkCall from './src/networkcall/NetworkCall';
+import PushNotifications from './src/pushNotifications/PushNotifications';
+import messaging from "@react-native-firebase/messaging"
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -38,6 +41,10 @@ function Section({children, title}: SectionProps): React.JSX.Element {
     <StopWatch/>
   );
 }
+
+messaging().setBackgroundMessageHandler(async remoteMesssage =>{
+  console.log("Killed state notifications",remoteMesssage)
+})
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -57,17 +64,19 @@ function App(): React.JSX.Element {
     console.log("=======>prop",prop)
     setCounterValue(count-prop)
     // setCounterValue(prev => prev-prop)
-  }
+  } 
 
   return (
-    <CreateContext.Provider value={{
-      count,
-      incrementFunction:incrementFunction,
-      decrementFunction:decrementFunction,
-      decreaseByValue:decreaseByValue,
-    }}>
-      <StopWatch/>
-    </CreateContext.Provider>
+    <PushNotifications/>
+    // <NetworkCall/>
+    // <CreateContext.Provider value={{
+    //   count,
+    //   incrementFunction:incrementFunction,
+    //   decrementFunction:decrementFunction,
+    //   decreaseByValue:decreaseByValue,
+    // }}>
+    //   <StopWatch/>
+    // </CreateContext.Provider>
     // <Provider store={store}>
     //   <StopWatch/>
     // </Provider>
